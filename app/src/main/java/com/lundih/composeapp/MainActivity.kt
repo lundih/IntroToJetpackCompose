@@ -58,7 +58,7 @@ fun AppUI () {
 }
 
 @Composable
-fun SuperHeroCard(name: String, painter: Painter, ) {
+fun SuperHeroCard(name: String, painter: Painter) {
     val fontFamily = FontFamily(
         Font(R.font.genos_regular, FontWeight.Normal),
         Font(R.font.genos_bold, FontWeight.Bold))
