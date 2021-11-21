@@ -17,9 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lundih.composeapp.ui.theme.ComposeAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,10 +56,14 @@ fun AppUI () {
 
 @Composable
 fun SuperHeroCard(name: String, painter: Painter, ) {
+    val fontFamily = FontFamily(
+        Font(R.font.genos_regular, FontWeight.Normal),
+        Font(R.font.genos_bold, FontWeight.Bold))
+
     Card(modifier = Modifier
-            .fillMaxWidth(0.5f)
-            .height(200.dp)
-            .padding(8.dp),
+        .fillMaxWidth(0.5f)
+        .height(200.dp)
+        .padding(8.dp),
         shape = RoundedCornerShape(8.dp)) {
 
         Image(painter = painter,
@@ -63,9 +73,16 @@ fun SuperHeroCard(name: String, painter: Painter, ) {
         Box(modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomStart) {
 
-            Text(modifier = Modifier.padding(8.dp),
+            Text(
+                modifier = Modifier.padding(8.dp),
                 text = name,
-                style = TextStyle(color = Color.White))
+                color = Color.White,
+                fontSize = 24.sp,
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Italic,
+                textAlign = TextAlign.Start,
+                textDecoration = TextDecoration.Underline)
         }
     }
 }
