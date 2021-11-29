@@ -1,9 +1,11 @@
 package com.lundih.composeapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -11,11 +13,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -62,43 +67,47 @@ fun SuperHeroCard(name: String, painter: Painter) {
     val fontFamily = FontFamily(
         Font(R.font.genos_regular, FontWeight.Normal),
         Font(R.font.genos_bold, FontWeight.Bold))
+    val context = LocalContext.current
+    val textVisible = remember { mutableStateOf(false) }
 
     Card(modifier = Modifier
         .fillMaxWidth(0.5f)
         .height(200.dp)
-        .padding(8.dp),
+        .padding(8.dp)
+        .clickable {
+            textVisible.value = !textVisible.value
+        },
         shape = RoundedCornerShape(8.dp)) {
 
         Image(painter = painter,
             contentDescription = name,
             contentScale = ContentScale.Crop)
 
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomStart) {
+        if (textVisible.value) {
+            Box(modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomStart) {
 
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = buildAnnotatedString {
-                    append(name.split(" ")[0] + " ")
-                    withStyle(
-                        style = SpanStyle(
-                            fontSize = 28.sp,
-                            fontFamily = fontFamily,
-                            fontWeight = FontWeight.Bold,
-                            fontStyle = FontStyle.Italic,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    ) {
-                        append(name.split(" ")[1])
-                    }
-                },
-                color = Color.White,
-                fontSize = 24.sp,
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal,
-                textAlign = TextAlign.Start
-            )
+                Text(modifier = Modifier.padding(8.dp),
+                    text = buildAnnotatedString {
+                        append(name.split(" ")[0] + " ")
+                        withStyle(style = SpanStyle(
+                                fontSize = 28.sp,
+                                fontFamily = fontFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontStyle = FontStyle.Italic,
+                                textDecoration = TextDecoration.Underline)) {
+                            append(name.split(" ")[1])
+                        }
+                    },
+                    color = Color.White,
+                    fontSize = 24.sp,
+                    fontFamily = fontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontStyle = FontStyle.Normal,
+                    textAlign = TextAlign.Start
+                )
+            }
+            Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
         }
     }
 }
